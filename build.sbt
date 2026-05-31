@@ -1,15 +1,16 @@
 
 name := "spark-optimization"
 
-version := "0.2"
+version := "0.3"
 
-scalaVersion := "2.13.12"
+scalaVersion := "2.13.16"
 
-val sparkVersion = "3.5.0"
-val log4jVersion = "2.20.0"
+val sparkVersion = "4.0.0"
+val log4jVersion = "2.24.3"
+
+javacOptions ++= Seq("-source", "21", "-target", "21")
 
 resolvers ++= Seq(
-  "bintray-spark-packages" at "https://dl.bintray.com/spark-packages/maven",
   "Typesafe Simple Repository" at "https://repo.typesafe.com/typesafe/simple/maven-releases",
   "MavenRepository" at "https://mvnrepository.com"
 )
