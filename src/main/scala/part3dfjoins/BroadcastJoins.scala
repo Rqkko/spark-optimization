@@ -37,6 +37,7 @@ object BroadcastJoins {
   // joined.show - takes an ice age
 
   // a smarter join
+  // Broadcast join: Smaller DF (lookupTable) is sent to all executors
   val joinedSmart = table.join(broadcast(lookupTable), "id")
   joinedSmart.explain()
   // joinedSmart.show()
@@ -47,7 +48,8 @@ object BroadcastJoins {
   val joinedNumbers = smallTable.join(bigTable, "id")
 
   // deactivate auto-broadcast
-  spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1)
+  // Default: 10 MB
+  spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1) // number in bytes (e.g. set to 30 above the statement, will not auto broadcast because smallTable is > 30 bytes)
 
   joinedNumbers.explain()
 
