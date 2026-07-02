@@ -96,18 +96,18 @@ object Bucketing {
                          +- BatchScan[arrdelay#17, carrier#18, dest#24, origin#27] JsonScan Location: InMemoryFileIndex[file:/Users/daniel/dev/rockthejvm/courses/spark-optimization/src/main/resources..., ReadSchema: struct<arrdelay:double,carrier:string,dest:string,origin:string>
    */
 
-//  flightsDF.write
-//    .partitionBy("origin")
-//    .bucketBy(4, "dest", "carrier")
-//    .saveAsTable("flights_bucketed") // just as long as a shuffle
-//
-//  val flightsBucketed = spark.table("flights_bucketed")
-//  val mostDelayed2 = flightsBucketed
-//    .filter("origin = 'DEN' and arrdelay > 1")
-//    .groupBy("origin", "dest", "carrier")
-//    .avg("arrdelay")
-//    .orderBy($"avg(arrdelay)".desc_nulls_last)
-//  mostDelayed2.explain()
+  flightsDF.write
+    .partitionBy("origin")
+    .bucketBy(4, "dest", "carrier")
+    .saveAsTable("flights_bucketed") // just as long as a shuffle
+
+  val flightsBucketed = spark.table("flights_bucketed")
+  val mostDelayed2 = flightsBucketed
+    .filter("origin = 'DEN' and arrdelay > 1")
+    .groupBy("origin", "dest", "carrier")
+    .avg("arrdelay")
+    .orderBy($"avg(arrdelay)".desc_nulls_last)
+  mostDelayed2.explain()
   /*
     == Physical Plan ==
     *(2) Sort [avg(arrdelay)#140 DESC NULLS LAST], true, 0
