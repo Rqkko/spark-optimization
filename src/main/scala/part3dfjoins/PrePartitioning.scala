@@ -47,6 +47,8 @@ object PrePartitioning {
    */
 
   // scenario 2
+  // When repartition with a column (in this case, id), it will use HashPartitioning
+  // Spark will auto detect that the first repartition should be overridden by the below repartitions
   val altNarrow = narrowTable.repartition($"id") // use a HashPartitioner
   val altInitial = initialTable.repartition($"id")
   // join on co-partitioned DFs
@@ -96,6 +98,7 @@ object PrePartitioning {
   /**
     * Exercise: what would happen if we just repartitioned the smaller table to 10 partitions?
     * TERRIBLE!
+    * No guarantee the columns with same ID will be in the same partition (which is necessary to do joins)
     *
     */
 
