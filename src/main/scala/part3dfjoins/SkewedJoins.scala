@@ -30,6 +30,9 @@ object SkewedJoins {
     .filter(abs(laptopOffers.col("procSpeed") - laptops.col("procSpeed")) <= 0.1)
     .groupBy("registration")
     .agg(avg("salePrice").as("averagePrice"))
+
+  // NOTE: This is slow because 50% of the laptop is Razor Blade, so there is one executor doing 50% of the joining
+
   /*
     == Physical Plan ==
     *(4) HashAggregate(keys=[registration#4], functions=[avg(salePrice#20)])
@@ -49,6 +52,9 @@ object SkewedJoins {
   val joined2 = laptops2.join(laptopOffers, Seq("make", "model", "procSpeed"))
     .groupBy("registration")
     .agg(avg("salePrice").as("averagePrice"))
+
+  // NOTE: This eliminates the skew problem by introducing procSpeed as another join columns since it is not as skewed
+
   /*
     == Physical Plan ==
     *(4) HashAggregate(keys=[registration#4], functions=[avg(salePrice#20)])
