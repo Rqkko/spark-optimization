@@ -74,7 +74,7 @@ object RDDSkewedJoins {
 
     val result = preparedLaptops.join(preparedOffers) // RDD[(make, model, procSpeed), (reg, salePrice))
       .map(_._2)
-      .aggregateByKey((0.0, 0))(
+      .aggregateByKey((0.0, 0))( // initial value for (totalPrice, numPrices)
         {
           case ((totalPrice, numPrices), salePrice) => (totalPrice + salePrice, numPrices + 1) // combine state with record
         },
