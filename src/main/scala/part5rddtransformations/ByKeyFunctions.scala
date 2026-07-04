@@ -94,7 +94,7 @@ object ByKeyFunctions {
     (count: Int) => count,
     (currentSum: Int, newValue: Int) => currentSum + newValue,
     (partialSum1: Int, partialSum2: Int) => partialSum1 + partialSum2,
-    numPartitions = 10
+    numPartitions = 10 // Output Partitions
   )
   totalCountsCombine.collectAsMap()
   // collect still takes 2 seconds
