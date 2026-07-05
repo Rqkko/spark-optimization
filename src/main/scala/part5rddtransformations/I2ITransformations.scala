@@ -63,9 +63,9 @@ object I2ITransformations {
     }
 
     val topMetrics = readMetrics()
-      .mapPartitions(iteratorToIteratorTransformation)
-      .repartition(1)
-      .mapPartitions(iteratorToIteratorTransformation)
+      .mapPartitions(iteratorToIteratorTransformation) // e.g. have 4 partitions -> return RDD with same 4 partitions but 10 remainings records each (10 smallest records)
+      .repartition(1) // Pulls 40 records into one single node
+      .mapPartitions(iteratorToIteratorTransformation) // return RDD with 10 global smallestv9i
 
     val result = topMetrics.take(LIMIT)
     result.foreach(println)
